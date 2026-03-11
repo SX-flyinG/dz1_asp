@@ -1,0 +1,97 @@
+@model homework_project.Models.SearchViewModel
+@{
+    ViewData["Title"] = "Пошук продуктів";
+    ViewData["Active"] = "Search";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-header">
+    <h1>🔍 Пошук продуктів</h1>
+    <p>Знайдіть продукт за назвою</p>
+</div>
+
+<div class="card" style="margin-bottom:1.5rem">
+    <form asp-action="Search" method="get">
+        <div class="search-bar">
+            <input
+                type="text"
+                name="query"
+                value="@Model.Query"
+                class="form-control"
+                placeholder="Введіть назву продукту..."
+                autofocus />
+            <button type="submit" class="btn btn-primary" style="white-space:nowrap">🔍 Шукати</button>
+            @if (!string.IsNullOrEmpty(Model.Query))
+            {
+                <a href="/Product/Search" class="btn btn-secondary">✕ Очистити</a>
+            }
+        </div>
+    </form>
+</div>
+
+@if (!string.IsNullOrEmpty(Model.Query))
+{
+    @if (!Model.Results.Any())
+    {
+        <div class="card">
+            <div class="empty-state">
+                <div class="icon">🔎</div>
+                <h3>Нічого не знайдено</h3>
+                <p>За запитом <strong style="color:var(--accent)">«@Model.Query»</strong> продуктів не знайдено</p>
+                <br>
+                <a href="/Product/Create" class="btn btn-primary">➕ Додати такий продукт</a>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="result-count">
+            Знайдено <strong>@Model.Results.Count</strong> 
+            @(Model.Results.Count == 1 ? "продукт" : "продукти") за запитом 
+            «<strong style="color:var(--text)">@Model.Query</strong>»
+        </div>
+
+        @foreach (var p in Model.Results)
+        {
+            <div class="card" style="margin-bottom:1rem">
+                <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px">
+                    <div>
+                        <h2 style="font-family:'Syne',sans-serif; font-size:1.25rem; margin-bottom:6px">@p.Name</h2>
+                        <span class="badge badge-blue">@p.Category</span>
+                        <span style="color:var(--muted); font-size:0.82rem; margin-left:8px">#@p.Id</span>
+                    </div>
+                    <div style="text-align:right">
+                        <div style="color:var(--success); font-size:1.4rem; font-weight:700; font-family:'Syne',sans-serif">
+                            @p.Price.ToString("N0") грн
+                        </div>
+                        <span class="badge badge-green" style="margin-top:4px">@p.Stock шт. на складі</span>
+                    </div>
+                </div>
+
+                @if (!string.IsNullOrEmpty(p.Description))
+                {
+                    <p style="color:var(--muted); font-size:0.9rem; margin-top:1rem; padding-top:1rem; border-top:1px solid var(--border)">
+                        @p.Description
+                    </p>
+                }
+
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-top:1rem; padding-top:1rem; border-top:1px solid var(--border)">
+                    <span style="color:var(--muted); font-size:0.82rem">
+                        📅 Додано: @p.CreatedAt.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("uk-UA"))
+                    </span>
+                    <a href="/Product/Delete/@p.Id" class="btn btn-danger btn-sm">🗑 Видалити</a>
+                </div>
+            </div>
+        }
+    }
+}
+else
+{
+    <div class="card">
+        <div class="empty-state">
+            <div class="icon">💡</div>
+            <h3>Введіть пошуковий запит</h3>
+            <p>Наприклад: «Ноутбук», «Samsung», «Кавоварка»</p>
+        </div>
+    </div>
+}

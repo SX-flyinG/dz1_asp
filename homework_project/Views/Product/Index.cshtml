@@ -1,0 +1,58 @@
+@model List<homework_project.Models.Product>
+@{
+    ViewData["Title"] = "Всі продукти";
+    ViewData["Active"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-header">
+    <h1>Каталог продуктів</h1>
+    <p>Всього продуктів: @Model.Count</p>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="card">
+        <div class="empty-state">
+            <div class="icon"></div>
+            <h3>Каталог порожній</h3>
+            <p>Додайте перший продукт, щоб почати</p>
+            <br>
+            <a href="/Product/Create" class="btn btn-primary"> Додати продукт</a>
+        </div>
+    </div>
+}
+else
+{
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Назва</th>
+                    <th>Категорія</th>
+                    <th>Ціна</th>
+                    <th>Склад</th>
+                    <th>Дата</th>
+                    <th>Дія</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var p in Model)
+                {
+                    <tr>
+                        <td style="color:var(--muted)">#@p.Id</td>
+                        <td style="font-weight:500">@p.Name</td>
+                        <td><span class="badge badge-blue">@p.Category</span></td>
+                        <td style="color:var(--success);font-weight:500">@p.Price.ToString("N0") грн</td>
+                        <td><span class="badge badge-green">@p.Stock шт</span></td>
+                        <td style="color:var(--muted);font-size:0.85rem">@p.CreatedAt.ToString("dd.MM.yyyy")</td>
+                        <td>
+                            <a href="/Product/Delete/@p.Id" class="btn btn-danger btn-sm">Видалити</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

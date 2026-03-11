@@ -1,0 +1,62 @@
+@model homework_project.Models.Product
+@{
+    ViewData["Title"] = "Видалення продукту";
+    ViewData["Active"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="breadcrumb">
+    <a href="/Product/Index">Продукти</a>
+    <span>›</span>
+    Видалення
+</div>
+<br>
+
+<div class="page-header">
+    <h1>Видалення продукту</h1>
+    <p>Перегляньте дані перед видаленням</p>
+</div>
+
+<div class="card">
+    <h2 style="font-family:'Syne',sans-serif; font-size:1.4rem; margin-bottom:0.25rem">@Model.Name</h2>
+    <span class="badge badge-blue">@Model.Category</span>
+
+    <div class="product-detail-grid">
+        <div class="detail-item">
+            <label>ID</label>
+            <span style="color:var(--muted)">#@Model.Id</span>
+        </div>
+        <div class="detail-item">
+            <label>Ціна</label>
+            <span style="color:var(--success); font-size:1.2rem; font-weight:600">@Model.Price.ToString("N0") грн</span>
+        </div>
+        <div class="detail-item">
+            <label>Залишок на складі</label>
+            <span>@Model.Stock шт.</span>
+        </div>
+        <div class="detail-item">
+            <label>Дата додавання</label>
+            <span>@Model.CreatedAt.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("uk-UA"))</span>
+        </div>
+        @if (!string.IsNullOrEmpty(Model.Description))
+        {
+            <div class="detail-item" style="grid-column: 1/-1">
+                <label>Опис</label>
+                <span style="color:var(--muted)">@Model.Description</span>
+            </div>
+        }
+    </div>
+
+    <div class="danger-zone">
+        <h3>Зона небезпеки</h3>
+        <p style="color:var(--muted); font-size:0.9rem; margin-bottom:1rem">
+            Ця дія є незворотньою. Продукт <strong style="color:var(--text)">«@Model.Name»</strong> буде остаточно видалено з бази даних.
+        </p>
+        <form asp-action="DeleteConfirmed" method="post" style="display:inline">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="id" value="@Model.Id" />
+            <button type="submit" class="btn btn-danger">Підтвердити видалення</button>
+        </form>
+        <a href="/Product/Index" class="btn btn-secondary" style="margin-left:12px">Скасувати</a>
+    </div>
+</div>
