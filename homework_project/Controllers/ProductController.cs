@@ -5,22 +5,18 @@ namespace homework_project.Controllers
 {
     public class ProductController : Controller
     {
-        // GET: /Product/Index
         public IActionResult Index()
         {
             var products = ProductRepository.GetAll();
             return View(products);
         }
 
-        // GET: /Product/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: /Product/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public IActionResult Create(Product product)
         {
             if (ModelState.IsValid)
@@ -32,7 +28,6 @@ namespace homework_project.Controllers
             return View(product);
         }
 
-        // GET: /Product/Delete/5
         public IActionResult Delete(int id)
         {
             var product = ProductRepository.GetById(id);
@@ -44,9 +39,7 @@ namespace homework_project.Controllers
             return View(product);
         }
 
-        // POST: /Product/DeleteConfirmed/5
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
         {
             var product = ProductRepository.GetById(id);
@@ -63,7 +56,6 @@ namespace homework_project.Controllers
             return RedirectToAction("Index");
         }
 
-        // GET: /Product/Search
         public IActionResult Search(string query)
         {
             var model = new SearchViewModel
