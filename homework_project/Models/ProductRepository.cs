@@ -39,5 +39,19 @@ namespace homework_project.Models
             _products.Remove(product);
             return true;
         }
+
+        public static bool Update(Product updated)
+        {
+            var existing = _products.FirstOrDefault(p => p.Id == updated.Id);
+            if (existing == null) return false;
+
+            existing.Name = updated.Name;
+            existing.Description = updated.Description;
+            existing.Price = updated.Price;
+            existing.Category = updated.Category;
+            existing.CreatedAt = updated.CreatedAt;
+            existing.Stock = updated.Stock;
+            return true;
+        }
     }
 }

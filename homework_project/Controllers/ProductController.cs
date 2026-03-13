@@ -28,6 +28,44 @@ namespace homework_project.Controllers
             return View(product);
         }
 
+        public IActionResult Details(int id)
+        {
+            var product = ProductRepository.GetById(id);
+            if (product == null)
+            {
+                TempData["ErrorMessage"] = "Продукт не знайдено.";
+                return RedirectToAction("Index");
+            }
+            return View(product);
+        }
+
+        public IActionResult Edit(int id)
+        {
+            var product = ProductRepository.GetById(id);
+            if (product == null)
+            {
+                TempData["ErrorMessage"] = "Продукт не знайдено.";
+                return RedirectToAction("Index");
+            }
+            return View(product);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(Product product)
+        {
+            if (ModelState.IsValid)
+            {
+                bool updated = ProductRepository.Update(product);
+                if (updated)
+                    TempData["SuccessMessage"] = $"Продукт \"{product.Name}\" успішно оновлено.";
+                else
+                    TempData["ErrorMessage"] = "Продукт не знайдено.";
+
+                return RedirectToAction("Index");
+            }
+            return View(product);
+        }
+
         public IActionResult Delete(int id)
         {
             var product = ProductRepository.GetById(id);
