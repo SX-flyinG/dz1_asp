@@ -3,8 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using homework_project.DTOs;
 using homework_project.Models;
-using homework_project.Repository;
-
 namespace homework_project.Controllers;
 
 [ApiController]

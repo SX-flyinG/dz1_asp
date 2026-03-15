@@ -1,6 +1,5 @@
-using homework_project.Models;
 
-namespace homework_project.Repository;
+namespace homework_project.Models;
 
 public interface IUserRepository
 {
